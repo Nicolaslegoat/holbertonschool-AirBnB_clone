@@ -15,9 +15,10 @@ class BaseModel:
         Initializer for BaseModel class
         """
         if kwargs is not None:
-            for key, value in kwargs.items():
+            date_time = '%Y-%m-%dT%H:%M:%S.%f'
+            for key, date_time in kwargs.items():
                 if key != "__class__":
-                    setattr(self, key, value)
+                    setattr(self, key, date_time)
 
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
