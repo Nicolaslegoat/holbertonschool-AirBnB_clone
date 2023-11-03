@@ -5,6 +5,7 @@ A module that contains the console class.
 from models.engine.file_storage import FileStorage
 import cmd
 from models.base_model import BaseModel
+from models.user import User
 
 storage = FileStorage()
 
