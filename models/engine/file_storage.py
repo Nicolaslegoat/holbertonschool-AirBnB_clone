@@ -34,11 +34,36 @@ class FileStorage:
             file.write(json.dumps(dict_json))
 
     def reload(self):
+        from models import base_model
+        from models import user
+        from models import amenity
+        from models import city
+        from models import place
+        from models import review
+        from models import state
+    
+        list_module = {
+        "BaseModel": base_model,
+        "User": user,
+        "Amenity": amenity,
+        "City": city,
+        "Place": place,
+        "Review": review,
+        "State": state,
+        }
+        
+
         if os.path.exists(self.__file_path):
-            with open(self.__file_path, 'r') as file:
-                try:
-                    data = json.loads(file.read())
-                except json.decoder.JSONDecodeError:
-                    data = {}
-            for key, value in data.items():
-                self.__objects[key] = eval(value["__class__"])(**value)
+            with open(self.__file_path, "r") as file:
+
+                data = json.load(file)
+
+                for key, value in data.items():
+                    class_name = value["__class__"]
+
+                    if class_name in list_module:
+                        model_module = list_module[class_name]
+                        model_class = getattr(model_module, class_name)
+
+                    obj_instance = model_class(**value)
+                    self.__objects[key] = obj_instance
