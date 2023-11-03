@@ -4,7 +4,7 @@ A module that contains the console class.
 '''
 from models.engine.file_storage import FileStorage
 import cmd
-import models
+from models.base_model import BaseModel
 
 storage = FileStorage()
 
@@ -45,6 +45,8 @@ class HBNBCommand(cmd.Cmd):
         cls = globals()[args]
         new_instance = cls()
         storage.save()
+
+        print(new_instance.id)
 
     def do_show(self, args):
         if not args:
