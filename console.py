@@ -27,7 +27,6 @@ class HBNBCommand(cmd.Cmd):
         '''
         The End of file Method.
         '''
-        print()
         return True
 
     def emptyline(self):
