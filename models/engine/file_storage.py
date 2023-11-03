@@ -1,9 +1,10 @@
 #!/usr/bin/python3
-'''
-A module that contains the Filestorage class.
-'''
-import json
+""" file_storage module that contains the FileStorage class
+"""
 from models.base_model import BaseModel
+import json
+import os
+import models
 
 
 class FileStorage:
@@ -29,12 +30,15 @@ class FileStorage:
         dict_json = {}
         for key, obj in self.__objects.items():
             dict_json[key] = obj.to_dict()
-
-        with open(self.__file_path, "w") as file:
-            json.dump(dict_json, obj)
+        with open(self.__file_path, 'w') as file:
+            file.write(json.dumps(dict_json))
 
     def reload(self):
-        with open(self.__file_path, "r") as file:
-            data = json.load(file)
+        if os.path.exists(self.__file_path):
+            with open(self.__file_path, 'r') as file:
+                try:
+                    data = json.loads(file.read())
+                except json.decoder.JSONDecodeError:
+                    data = {}
             for key, value in data.items():
-                class_name, obj_id = key.split(".")
+                self.__objects[key] = eval(value["__class__"])(**value)
