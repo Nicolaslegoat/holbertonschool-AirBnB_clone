@@ -9,7 +9,7 @@ class HBNBCommand(cmd.Cmd):
     '''
     A class that sets the airbnb console.
     '''
-    prompt = "(hbnb)"
+    prompt = "(hbnb) "
 
     def do_quit(self, arg):
         '''
@@ -29,6 +29,12 @@ class HBNBCommand(cmd.Cmd):
         '''
         print()
         return True
+
+    def emptyline(self):
+        '''
+        A method for enter prompt to do nothing.
+        '''
+        pass
 
 
 if __name__ == '__main__':
