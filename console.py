@@ -13,15 +13,9 @@ class HBNBCommand(cmd.Cmd):
 
     def do_quit(self, arg):
         '''
-        A method that quit the console.
+        A method that quits the console.
         '''
         return True
-
-    def do_help(self, arg):
-        '''
-        The method to print helping message.
-        '''
-        print("Quit command to exit the program")
 
     def do_EOF(self, arg):
         '''
