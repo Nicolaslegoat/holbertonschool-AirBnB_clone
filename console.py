@@ -2,8 +2,11 @@
 '''
 A module that contains the console class.
 '''
+from models.engine.file_storage import FileStorage
 import cmd
 import models
+
+storage = FileStorage()
 
 
 class HBNBCommand(cmd.Cmd):
@@ -34,21 +37,109 @@ class HBNBCommand(cmd.Cmd):
         if not args:
             print("** class name missing **")
             return
-        
+
         if args not in globals():
             print("** class doesn't exist **")
             return
 
         cls = globals()[args]
         new_instance = cls()
+        storage.save()
 
-        models.storage.save()
+    def do_show(self, args):
+        if not args:
+            print("** class name missing **")
+            return
 
-        return new_instance.id
+        list_args = args.split()
 
-    def do_show(self):
+        if list_args[0] not in globals():
+            print("** class doesn't exist **")
+            return
 
+        if len(list_args) != 2:
+            print("** instance id missing **")
+            return
+        instance = f"{list_args[0]}.{list_args[1]}"
 
+        if instance not in storage.all():
+            print("** no instance found **")
+            return
+
+        print(storage.all()[instance])
+
+    def do_destroy(self, args):
+        if not args:
+            print("** class name missing **")
+            return
+
+        list_args = args.split()
+
+        if list_args[0] not in globals():
+            print("** class doesn't exist **")
+            return
+
+        if len(list_args) != 2:
+            print("** instance id missing **")
+            return
+        instance = f"{list_args[0]}.{list_args[1]}"
+
+        if instance not in storage.all():
+            print("** no instance found **")
+            return
+
+        del storage.all()[instance]
+        storage.save()
+
+    def do_all(self, args):
+
+        if not args:
+            print([str(storage.all()[id]) for id in storage.all()])
+            return
+
+        list_args = args.split()
+
+        if list_args[0] not in globals():
+            print("** class doesn't exist **")
+            return
+
+        list = []
+        for instance in storage.all():
+            if args in instance:
+                list.append(str(storage.all()[instance]))
+
+        print(list)
+
+    def do_update(self, args):
+        if not args:
+            print("** class name missing **")
+            return
+
+        list_args = args.split()
+
+        if list_args[0] not in globals():
+            print("** class doesn't exist **")
+            return
+
+        if len(list_args) < 2:
+            print("** instance id missing **")
+            return
+        instance = f"{list_args[0]}.{list_args[1]}"
+
+        if instance not in storage.all():
+            print("** no instance found **")
+            return
+
+        if len(list_args) < 3:
+            print("** attribute name missing **")
+            return
+
+        if len(list_args) < 4:
+            print("** value missing **")
+            return
+
+        setattr(storage.all()[instance], list_args[3], list_args[4])
+        storage.save()
 
 
 if __name__ == '__main__':
