@@ -41,17 +41,16 @@ class FileStorage:
         from models import place
         from models import review
         from models import state
-    
+
         list_module = {
-        "BaseModel": base_model,
-        "User": user,
-        "Amenity": amenity,
-        "City": city,
-        "Place": place,
-        "Review": review,
-        "State": state,
+            "BaseModel": base_model,
+            "User": user,
+            "Amenity": amenity,
+            "City": city,
+            "Place": place,
+            "Review": review,
+            "State": state,
         }
-        
 
         if os.path.exists(self.__file_path):
             with open(self.__file_path, "r") as file:
