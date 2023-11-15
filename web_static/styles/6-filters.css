@@ -63,6 +63,7 @@ h4 {
     list-style: none;
     position: absolute;
     top: 169px;
+    display: none;
 }
 
 .amenities:hover .popover,
